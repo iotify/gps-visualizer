@@ -1,0 +1,80 @@
+<html>
+  <body>
+    <div id="example" class="container">
+      <div>
+        <div class="row row-center">
+          <div class="column">
+            <h2 style="text-align: center; margin-top: 20px;">
+              IoTIFY Logistic Demo
+            </h2>
+            <p>
+              Simulation of a delivery van delivering packages in the city of
+              Zurich.
+            </p>
+
+            <p v-if="inited">
+              <strong style="color: green;">Connected:</strong> Received
+              messages from the server
+            </p>
+            <p v-else>
+              <strong style="color: red;">Not connected:</strong>
+              Send HTTP POST message to the URL. {{location}}
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="column">
+            <l-map style="height: 600px;" :zoom="zoom" :center="center">
+              <l-tile-layer
+                :url="url"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              ></l-tile-layer>
+              <div v-if="inited">
+                <l-polyline :lat-lngs="path"></l-polyline>
+                <l-marker
+                  v-for="(value, key) in markers"
+                  :key="key"
+                  :lat-lng="[value.location.latitude, value.location.longitude]"
+                >
+                  <l-popup>
+                    
+                    <h5>Client: {{key}}</h5>
+                    <pre>{{value }}</pre>
+                  </l-popup>
+                </l-marker>
+              </div>
+            </l-map>
+          </div>
+         
+        </div>
+        Received Message Logs
+        <pre style="height: auto; max-height: 200px; overflow: auto;"><code>
+                {{logs}}
+               </code></pre>
+      </div>
+    </div>
+    <link rel="stylesheet" href="style.css" />
+
+    <link rel="stylesheet" href="//unpkg.com/leaflet/dist/leaflet.css" />
+    <link
+      rel="stylesheet"
+      href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"
+    />
+    <link
+      rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css"
+    />
+    <link
+      rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/milligram/1.3.0/milligram.css"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/vue-socket.io@3.0.7/dist/vue-socketio.min.js"></script>
+    <script src="//unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="//unpkg.com/vue2-leaflet"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/geolib@3.3.1/lib/index.min.js"></script>
+    <script src="logic.js"></script>
+  </body>
+</html>
